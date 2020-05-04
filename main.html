@@ -1,0 +1,1216 @@
+<style>
+
+    .collapsible {
+      font-family: Cambria, Georgia, serif;
+      background-color: #fff;
+      box-sizing: border-box;
+      color: #444;
+      cursor: pointer;
+      padding: 1.5vh;
+      width: 891px;
+      border: none;
+      text-align: left;
+      outline: none;
+      font-size: 1.5em;
+      margin-left: 6vh;
+      margin-right: 6vh;
+      margin-top: 6vh;
+    }
+
+    .content_container {
+        font-family: Cambria, Georgia, serif;
+        background-color: #fff;
+        box-sizing: border-box;
+        color: #444;
+        cursor: pointer;
+        padding: 1.5vh;
+        width: 891px;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 1.5em;
+        margin-left: 6vh;
+        margin-right: 6vh;
+        margin-top: 6vh;
+    }
+    
+    .active, .content_containet:hover {
+      background-color: #ccc;
+    }
+    
+    .content_container:after {
+      content: '\02795'; /* Unicode character for "plus" sign (+) */
+      font-size: .75em;
+      color: white;
+      float: left;
+      margin-left: 5px;
+    }
+    
+    .active:after {
+      content: "\2796"; /* Unicode character for "minus" sign (-) */
+    }
+
+    .header {
+        font-family: 'Courier New', Courier, monospace;
+        text-align: center;
+        box-sizing: border-box;
+        color: #333;
+        padding: 2vh;
+        width: 891px;
+        border: none;
+        text-align: center;
+        outline: none;
+        font-size: 3em;
+        margin: auto;
+        margin-top: 6vh;
+    }
+    
+    .content {
+        font-family: 'Courier New', Courier, monospace;
+        text-align: center;
+        box-sizing: border-box;
+        color: #333;
+        padding: 2vh;
+        width: 891px;
+        border: none;
+        text-align: center;
+        outline: none;
+        font-size: 1.5em;
+        margin: auto;
+        overflow: hidden;
+        transition: height 0.6s ease-out;
+    }
+    
+    @media only screen and (max-width: 991px) {
+      .content {
+        max-width: 90%;
+      }
+      .header {
+        max-width: 90%;
+      }
+    }
+
+    
+    </style>
+
+    <!-- Including jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    
+    <body>
+    <div class="header"> 
+        <p>The Eco Arcitecht</p>
+    </div>
+    <div class="content" id="content">
+      Press any key to continue when you hear this sound.
+    </div>
+    </body>
+    
+    <script>
+    
+    var yhvisited = 0;
+    var thvisited = 0;
+    var eevisited = 0;    
+    var sssvisited = 0;
+    var fpfvisited = 0;
+    var ctvvisited = 0;
+    var mmhvisited = 0;
+    var dglvisited = 0;
+    var btbvisited = 0;
+    var round = 1;
+    var choice = 0;
+    var reset = 0;
+    var score1 = 0;
+    var turn = 0;
+    var holding = 1;
+    var current_loc = 4;
+
+    var content = document.getElementsByClassName("content");
+ 
+    window.audio = new Audio('Narrator_WhenYouHearThisPressAnyKey.mp3');
+    var beep = new Audio('beep.mp3');
+    window.audio.onended = function() { beep.play(); holding = 0; };
+    window.audio.play();
+    window.bg = new Audio('Green Background.mp3');
+    window.bg.loop = true;
+    window.bg.volume = 0.025;
+    window.bg.play();
+
+    function north() {
+      if ((current_loc-3) >= 0) {
+        current_loc -= 3;
+        goTo(current_loc);
+      } else { holding = 0; }
+    }
+    function south() {
+      if ((current_loc+3) <= 8) {
+        current_loc += 3;
+        goTo(current_loc);
+      } else { holding = 0; }
+    }
+    function east() {
+      if ((current_loc%3) != 2) {
+        current_loc += 1 ;
+        goTo(current_loc);
+      } else { holding = 0; }
+    }
+    function west() {
+      if ((current_loc%3) != 0) {
+        current_loc -= 1;
+        goTo(current_loc);
+      } else { holding = 0; }
+    }
+    function select() {
+      if (round == 1) {
+        if (current_loc == 8) {
+          choice = 1;
+          $('#content').text('Excellent. You\'ve made the right choice.');
+            window.audio = new Audio('Sage_Excellent.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 6) {
+          choice = 2;
+          $('#content').text('Right on! I\'ll have that shipped over to Basil ASAP.');
+            window.audio = new Audio('Em_RightOn.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 2) {
+          if (choice == 1) {
+            choice = 0;
+            reset = 1;
+            round = 2;
+          }
+          if (choice == 2) {
+            choice = 0;
+            reset = 1;
+            round = 2;
+            score1 = score1+1;
+          }
+          $('#content').text('Alright! I\'ll get right on that!');
+            window.audio = new Audio('Basil_AlrightI\'llGetRight.mp3');
+            window.audio.play();
+            window.audio.onended = function() {goTo(7); holding = 0;}
+        }
+      }
+      if (round == 2) {
+        if (current_loc == 8) {
+          choice = 1;
+          $('#content').text('Excellent. You\'ve made the right choice.');
+            window.audio = new Audio('Sage_Excellent.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 6) {
+          choice = 2;
+          $('#content').text('Right on! I\'ll have that shipped over to Basil ASAP.');
+            window.audio = new Audio('Em_RightOn.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 2) {
+          if (choice == 1) {
+            choice = 0;
+            reset = 1;
+            round = 3;
+            score1 = score1+1;
+            
+          }
+          if (choice == 2) {
+            choice = 0;
+            reset = 1;
+            round = 3;
+            
+          }
+          $('#content').text('Alright! I\'ll get right on that!');
+            window.audio = new Audio('Basil_AlrightI\'llGetRight.mp3');
+            window.audio.play();
+            window.audio.onended = function() {goTo(7); holding = 0;}
+        }
+      }
+      if (round == 3) {
+        if (current_loc == 8) {
+          choice = 1;
+          $('#content').text('Excellent. You\'ve made the right choice.');
+            window.audio = new Audio('Sage_Excellent.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 6) {
+          choice = 2;
+          $('#content').text('Right on! I\'ll have that shipped over to Basil ASAP.');
+            window.audio = new Audio('Em_RightOn.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 2) {
+          if (choice == 1) {
+            choice = 0;
+            reset = 1;
+            round = 4;
+            score1 = score1+1;
+          }
+          if (choice == 2) {
+            choice = 0;
+            reset = 1;
+            round = 4;
+          }
+          $('#content').text('Alright! I\'ll get right on that!');
+            window.audio = new Audio('Basil_AlrightI\'llGetRight.mp3');
+            window.audio.play();
+            window.audio.onended = function() {goTo(7); holding = 0;}
+        }
+      }
+      if (round == 4) {
+        if (current_loc == 8) {
+          choice = 1;
+          $('#content').text('Excellent. You\'ve made the right choice.');
+            window.audio = new Audio('Sage_Excellent.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 6) {
+          choice = 2;
+          $('#content').text('Right on! I\'ll have that shipped over to Basil ASAP.');
+            window.audio = new Audio('Em_RightOn.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 2) {
+          if (choice == 1) {
+            choice = 0;
+            reset = 1;
+            round = 5;
+          }
+          if (choice == 2) {
+            choice = 0;
+            reset = 1;
+            round = 5;
+            score1 = score1+1;
+          }
+          $('#content').text('Alright! I\'ll get right on that!');
+            window.audio = new Audio('Basil_AlrightI\'llGetRight.mp3');
+            window.audio.play();
+            window.audio.onended = function() {goTo(7); holding = 0;}
+        }
+      }
+      if (round == 5) {
+        if (current_loc == 8) {
+          choice = 1;
+          $('#content').text('Excellent. You\'ve made the right choice.');
+            window.audio = new Audio('Sage_Excellent.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 6) {
+          choice = 2;
+          $('#content').text('Right on! I\'ll have that shipped over to Basil ASAP.');
+            window.audio = new Audio('Em_RightOn.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 2) {
+          if (choice == 1) {
+            choice = 0;
+            reset = 1;
+            round = 6;
+          }
+          if (choice == 2) {
+            choice = 0;
+            reset = 1;
+            round = 6;
+            score1 = score1+1;
+          }
+          $('#content').text('Alright! I\'ll get right on that!');
+            window.audio = new Audio('Basil_AlrightI\'llGetRight.mp3');
+            window.audio.play();
+            window.audio.onended = function() {goTo(7); holding = 0;}
+        }
+      }
+    }
+
+    function spacebar() {
+      if (round == 1) {
+        if (current_loc == 4) {
+          if (yhvisited == 1) {
+            $('#content').text('Nothing much is happening here.');
+            window.audio = new Audio('NothingMuchIsHappening\ 2020-04-15 18.03.15.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+          }
+        }
+        else if (current_loc == 7) {
+          if (thvisited == 1) {
+            $('#content').text('If you came here looking for my opinion, I\'m completely impartial. But keep up the great work!');
+            window.audio = new Audio('IfYouCameHereLooking\ (online-audio-converter.com).mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+          }
+        }
+        else if (current_loc == 2) {
+          if (btbvisited == 1) {
+            $('#content').text('Architect, do you copy? This is Basil the builder. I\'ve got my tools ready, at your service. Let me know when you\'re ready to BUILD! Basil, over and out.');
+            window.audio = new Audio('Basil_ArchitectDoYouCopy.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+          }
+        }
+        else if (current_loc == 5) {
+          if (ctvvisited == 1) {
+            $('#content').text('Whichever material you use, I could add some glass paneling and have it designed to give off a pretty modern farmhouse vibe. But maybe don’t use wood because I’m trying to get sponsored by Patagonia and advocating for deforestation would make me look really bad. Save the trees!');
+            window.audio = new Audio('Chartreuse_WhicheverMaterialYouUse.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+          }
+        }
+        else if (current_loc == 1) {
+          if (mmhvisited == 1) {
+            $('#content').text('I want my family to feel safe in our own house. We already lost our house, I don’t want to ever have to worry again about a storm or fire coming and destroying our house. I want my kids to always have a safe place to play and I don’t want them to get sick from mold growing inside in the house. My little girl, Fern, already has asthma.');
+            window.audio = new Audio('Moss_IWantMyFamily.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+          }
+        }
+        else if (current_loc == 3) {
+          if (fpfvisited == 1) {
+            $('#content').text('Wood is the clear option here. It’s cheap, and I’ll be able to sleep in my own bed sooner. I don’t want to pay more taxes just because some people can’t get off their high horse and adjust to a reasonably priced life. I only have a few more years left anyway so I don’t see the point in investing in a nice house.');
+            window.audio = new Audio('Farmer_WoodIsTheClearOption.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+          }
+        }
+        else if (current_loc == 0) {
+          if (dglvisited == 1) {
+            $('#content').text('Our two options for rebuilding materials are timber and concrete. Both are readily available on our island: making concrete would require mixing water and a variety of sands, and timber would require us to cut down a lot of trees in our forest. Timber is a cheaper material with a faster turnaround rate so the houses can be built faster. While concrete houses take longer to build at a slightly higher cost, they are better equipped to handle both humid sea air and fires.');
+            window.audio = new Audio('Green_OurTwoOptionsForRebuildingMaterialsTimberConcrete.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+          }
+        }
+        else if (current_loc == 8) {
+          if (sssvisited == 1) {
+            $('#content').text('I\'m so glad you came to me for your building solutions. I can offer you the perfect material for your home construction project: quality wood at an affordable price. What do you say? Would you like that? Nature certainly would.');
+            window.audio = new Audio('Sage_ImSoGladYouCameToMe.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+          }
+        }
+        else if (current_loc == 6) {
+          if (eevisited == 1) {
+            $('#content').text('Oh, you need to build some houses? I run an honest business here so I\'ll only offer you what I trust to build my own house out of. Concrete! It\'s not the cheapest, but you can\'t live without it. I know you can\'t. Do you want to buy it? Say yes. I really want to make my first sale...');
+            window.audio = new Audio('Em_OhYouNeedToBuild.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+          }
+        }
+      }
+      
+      if (round == 2) {
+        if (current_loc == 4) {
+          $('#content').text('Nothing much is happening here.');
+            window.audio = new Audio('NothingMuchIsHappening\ 2020-04-15 18.03.15.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 7) {
+          $('#content').text('If you came here looking for my opinion, I\'m completely impartial. But keep up the great work!');
+            window.audio = new Audio('IfYouCameHereLooking\ (online-audio-converter.com).mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 2) {
+          $('#content').text('Architect, do you copy? This is Basil the builder. I\'ve got my tools ready, at your service. Let me know when you\'re ready to BUILD! Basil, over and out.');
+            window.audio = new Audio('Basil_ArchitectDoYouCopy.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 5) {
+          $('#content').text('Palm trees would look SO pretty around the island and I could get the most perfect Instagram pictures with it. And in my vlog I could do a whole mental health segment about relaxing under palm trees! That could be really helpful as the town is still coping with this disaster.');
+            window.audio = new Audio('Chartreuse_PalmTreesWouldLookSo.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc ==  1) {
+          $('#content').text('Palm trees are dangerous. They catch on fire easily, burn for hours, and then their fiery leaves start falling to the ground. I don’t want my kids playing outside around that.');
+            window.audio = new Audio('Moss_PalmTreesAreDangerous.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 3) {
+          $('#content').text('I hate palm trees. They don’t provide any shade and they don’t cool the air either. I prefer a nice Coast Live Oak, like the ones I used to sit under and enjoy the shade after a long day in the fields.');
+            window.audio = new Audio('Farmer_IHatePalmTrees.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 0) {
+          $('#content').text('Palm trees are a classic option. They are aesthetically pleasing and have sturdy trunks that can withstand most storms. However, they would be a hazard if a fire were to happen again. The other option is replanting a native species, the Coast Live Oak. Its thick trunk and tall height prevent its leaves from being affected by a fire on the ground.');
+            window.audio = new Audio('Green_PalmTreesAreAClassicOption.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 8) {
+          $('#content').text('Architect, you\'ve made the right decision seeking my services for this tree dilemma you\'re facing. There\'s only one answer nature has given me, and that is the Coast Live Oak. Yes, this island\'s native tree. Will you accept? Or will you make the wrong decision?');
+            window.audio = new Audio('Sage_ArchitectYou_veMadeTheRightDecision.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 6) {
+          $('#content').text('Hey, you need trees? Well I\'ve got some. Not just any trees, the only trees I could find on the beach before I left! I mean...the only trees islands need! Palm trees! What do you say? You definitely won\'t regret it!');
+            window.audio = new Audio('Em_HeyYouNeedTrees.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+      }
+      
+      if (round == 3) {
+        if (current_loc == 4) {
+          $('#content').text('Nothing much is happening here.');
+            window.audio = new Audio('NothingMuchIsHappening\ 2020-04-15 18.03.15.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 7) {
+          $('#content').text('If you came here looking for my opinion, I\'m completely impartial. But keep up the great work!');
+            window.audio = new Audio('IfYouCameHereLooking\ (online-audio-converter.com).mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 2) {
+          $('#content').text('Architect, do you copy? This is Basil the builder. I\'ve got my tools ready, at your service. Let me know when you\'re ready to BUILD! Basil, over and out.');
+            window.audio = new Audio('Basil_ArchitectDoYouCopy.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 5) {
+          $('#content').text('Haven\'t you heard that there\'s a dry season over here? If we use rainwater instead of a well, doesn\'t that mean no more long, hot showers? No more jacuzzi?! How can you live like that! I\'m going to start a petition and get my Twitter followers to join. #wellsoversmells #rainwaterstinks');
+            window.audio = new Audio('Chartreuse_HaventYouHeard.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 1) {
+          $('#content').text('I will import water from the mainland before I let my kids drink well water. I\'ve heard that stuff is loaded with arsenic! No way we\'re drinking that!');
+            window.audio = new Audio('Moss_IWillImportWater.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 3) {
+          $('#content').text('Back in my day, we used to stand outside with our mouths open and just drink from the sky. That\'s the beauty of nature. But with climate change and all, it\'s not so rainy here anymore. Good thing my crops can withstand a little dry season. Besides, I don\'t take long showers like the kids these days, so it\'s no bother to me.');
+            window.audio = new Audio('Farmer_BackInMyDay.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 0) {
+          $('#content').text('Rainwater is generally free of contaminants, and only needs to be moderately filtered. It is sustainable because it does not depend on a depletable underground water supply. However, because our island has a rainy season and a dry season, residents will likely have to reduce their water usage during the dry season. On the other hand, underground wells are cheaper to install and provide a more reliable water supply in the short term, but they will eventually deplete our natural underground aquifers. Well water is also susceptible to multiple contaminants like arsenic and nitrates, so it needs to be inspected and filtered before it can be used.');
+            window.audio = new Audio('Green_RainwaterIsGenerallyFree.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 8) {
+          $('#content').text('Welcome, architect. The answer you need has already been provided by nature herself. Look to the sky. She showers us in water. I\'ll give you a set of rainwater retention tanks, as soon as you compensate me for this consultation. Are you reaching for your wallet yet?');
+            window.audio = new Audio('Sage_WelcomeArchitect.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 6) {
+          $('#content').text('You need water? You\'re in luck. According to my research, there\'s an underground aquifer on this island and I brought all the supplies we need to dig a well. It\'s pretty cheap, too! What do you say?');
+            window.audio = new Audio('Em_YouNeedWater.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+      }
+
+      if (round == 4) {
+        if (current_loc == 4) {
+          $('#content').text('Nothing much is happening here.');
+            window.audio = new Audio('NothingMuchIsHappening\ 2020-04-15 18.03.15.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 7) {
+          $('#content').text('If you came here looking for my opinion, I\'m completely impartial. But keep up the great work!');
+            window.audio = new Audio('IfYouCameHereLooking\ (online-audio-converter.com).mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 2) {
+          $('#content').text('Architect, do you copy? This is Basil the builder. I\'ve got my tools ready, at your service. Let me know when you\'re ready to BUILD! Basil, over and out.');
+            window.audio = new Audio('Basil_ArchitectDoYouCopy.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 5) {
+          $('#content').text('I\'ve always wanted to start my own farm! Of course, I\'ll film the whole process and upload it as a 13-part video series. Choosing your seeds, watering the plants, making healthy recipes... How many midroll ads is that? Maybe I can make a video for every plant. I need to call my manager. Patagonia is going to love this!');
+            window.audio = new Audio('Chartreuse_IveAlwaysWantedToStart.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 1) {
+          $('#content').text('My little girl, Olive, is severely allergic to those fertilizers they use on massive farms. I learned to make my own compost to use as fertilizer, and before the fire, we were growing all sorts of fruits and vegetables in our backyard. I prefer to know exactly what I\'m feeding my kids, and to do that, I have to grow it all myself!');
+            window.audio = new Audio('Moss_MyLittleGirlOlive.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 3) {
+          $('#content').text('I know the kids these days think they can make a farm right in their backyards. Well, I\'ll tell ya, I\'ve been doing this for sixty years and I know that when it\'s a bad growing year, you\'re going to wish you saved a couple extra coins from last season\'s harvest. Biodiversity looks good on the cover of a National Geographic magazine, but at the end of the day, I\'m running a business over here.');
+            window.audio = new Audio('Farmer_IKnowKidsTheseDays.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 0) {
+          $('#content').text('Many islands choose to grow large quantities of a single, profitable crop like avocados or bananas, which can be exported to the mainland. In that case, the island has to import the majority of it\'s food, since we can\'t survive off of just one food. It\'s also possible to grow a diversity of native fruits and vegetables on a smaller scale. These crops are more likely to thrive, and can allow the island to reduce its dependence on imported food. However, this type of farming is not likely to be a source of income for residents.');
+            window.audio = new Audio('Green_ManyIslandsChoose.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 8) {
+          $('#content').text('Greetings, I see that luck brought you here. Or perhaps nature is finally communicating with you. Probably not. Let me strike a deal with you, or rather, let me let you strike a deal with nature. Here is a large bag of seeds. Each season I can give you one like this, containing seeds of the fruit nature predicts to be most profitable on the mainland. Do you accept?');
+            window.audio = new Audio('Sage_GreetingsISeeThatLuck.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 6) {
+          $('#content').text('Okay, I\'ll be honest, I don\'t know much about farming, but growing just one crop just so you can try to sell it? Sounds like a scam to me! I bet you don\'t even know the market price for avocados. What I\'ve got here is a collection of all sorts of seeds and all the supplies you need to start a garden. You can\'t say no to this one, right? So, are you gonna buy these?');
+            window.audio = new Audio('Em_OKIllBeHonest.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+      }
+      
+      if (round == 5) {
+        if (current_loc == 4) {
+          $('#content').text('Nothing much is happening here.');
+            window.audio = new Audio('NothingMuchIsHappening\ 2020-04-15 18.03.15.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 7) {
+          $('#content').text('If you came here looking for my opinion, I\'m completely impartial. But keep up the great work!');
+            window.audio = new Audio('IfYouCameHereLooking\ (online-audio-converter.com).mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 2) {
+          $('#content').text('Architect, do you copy? This is Basil the builder. I\'ve got my tools ready, at your service. Let me know when you\'re ready to BUILD! Basil, over and out.');
+            window.audio = new Audio('Basil_ArchitectDoYouCopy.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 5) {
+          $('#content').text('Wind turbines? I\'ve heard those are SUPER loud. And don\'t you have to put them by the beach, which is right next to my house? The sound in all my videos will be RUINED. What\'s wrong with a little sun? I\'d choose the solar panels any day.');
+            window.audio = new Audio('Chartreuse_WindTurbines.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 1) {
+          $('#content').text('My little Forest wants to be a biologist when he grows up, and bats are his favorite mammal. I\'d be a failure of a father if I let an army of wind turbines move in here and hurt our native flying animals!');
+            window.audio = new Audio('Moss_MyLittleForest.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 3) {
+          $('#content').text('Growing up on the farm, I always wished I could get energy from the sun like plants do. Now you\'re telling me I can, but at a price? I don\'t use much power anyway. If I\'m lucky, the noise from the wind turbines might even drown out my snoring, and help me sleep better!');
+            window.audio = new Audio('Farmer_GrowingUpOnTheFarm.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 0) {
+          $('#content').text('Solar energy and wind energy are both good choices for renewable energy sources. Solar energy is collected with solar panels, which are powered by sunlight, and wind energy is collected by wind turbines, which are powered by wind. This island has plentiful wind in its coastal areas, and the average day has lots of sunlight, so both sources can be powered in this environment. The primary drawback of solar panels is that they have higher maintenance costs, while wind turbines often injure local birds and bats.');
+            window.audio = new Audio('Green_SolarEnergyAndWind.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 8) {
+          $('#content').text('Architect, what do you feel rustling through your hair? That\'s right, it\'s the wind, nature\'s breath. How could you not power the town with this abundant resource? Tell me, would you like me to send over the supplies to build a wind farm?');
+            window.audio = new Audio('Sage_ArchitectWhatDoYouFeel.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+        else if (current_loc == 6) {
+          $('#content').text('Power? You need power? Well, how do you think my boat gets power? The solar panels! And maybe some gasoline... Anyway, solar panels will be perfect for you. Let me know if you want them. Do you want them?');
+            window.audio = new Audio('Em_Power.mp3');
+            window.audio.play();
+            window.audio.onended = function() {holding = 0;}
+        }
+      }
+    }
+
+    function goTo(loc) {
+      current_loc = loc;
+      if (loc == 0) { //dr green lab
+        if (dglvisited == 0) {
+          $('#content').text('You notice a woman in a lab coat with a large briefcase of scientific equipment collecting soil samples. She smiles when she sees you, and comes over to speak with you.');
+          window.audio = new Audio('Narrator_YouNoticeWomanInLabCoat.mp3');
+          window.audio.onended = function() {
+            $('#content').text('Hi, how are you? Welcome to the town. My name is Dr. Green and I\'ve been living here studying the environmental conditions of the island as I work on my latest research paper. You\'re welcome to consult with me at any time about how your decisions will impact the local environment.');
+            audio = new Audio('Green_HiHowAreYou.mp3')
+            audio.onended = function() {
+              holding = 0;
+            };
+            window.audio.play();
+          };
+          window.audio.play();
+          dglvisited = 1;
+        } else {
+          $('#content').text('');
+          window.audio = new Audio('Narrator_GreenLabNorthwest.mp3');
+          window.audio.play();
+          window.audio.onended = function() {holding = 0;}
+        }
+        window.bg.pause();
+        window.bg = new Audio('Green Background.mp3');
+        window.bg.loop = true;
+        window.bg.volume = 0.025;
+        window.bg.play();
+      }
+
+      if (loc == 1) { //mr moss house
+        if (mmhvisited == 0) {
+          $('#content').text('A curly-haired man wearing a baby carrier and cargo shorts is sitting in a circle of children reading a book. As you approach, he looks up from the book to greet you.');
+          window.audio = new Audio('Narrator_CurlyHairedManBabyCarrier.mp3');
+          window.audio.play();
+          window.audio.onended = function() {
+            $('#content').text('You must be our new neighbor. My name is Moss, and these are my dear children. Kids, say hello to the new architect. I\'m so glad you\'re finally here, because I just have a couple of very important suggestions for you to consider. Whenever you\'re ready for them, just let me know.');
+            window.audio = new Audio('Moss_YouMustBeOurNewNeighbor.mp3')
+            window.audio.onended = function() {
+              holding = 0;
+            };
+            window.audio.play();
+          };
+          window.audio.play();
+          mmhvisited = 1;
+        } else {
+          $('#content').text('');
+          window.audio = new Audio('Narrator_MossHouseNorth.mp3');
+          window.audio.play();
+          window.audio.onended = function() {holding = 0;}
+        }
+        window.bg.pause();
+        window.bg = new Audio('Moss Background.mp3');
+        window.bg.loop = true;
+        window.bg.volume = 0.025;
+        window.bg.play();
+      }
+      
+      if (loc == 2) { //basil the builder
+        if (btbvisited == 0) {
+          $('#content').text('A man wearing a construction hat and canvas coveralls is sitting on a toolbox reading a physics textbook. You approach him and he stands up and salutes.');
+          window.audio = new Audio('Narrator_ManWearingConstructionHat.mp3');
+          window.audio.play();
+          window.audio.onended = function() {
+            $('#content').text('Basil the Builder, at your service! I\'m Basil, and I\'m the resident engineer. I built this town once, I can build it again in no time. I\'m all ready to go as soon as you get me some blueprints and materials!');
+            window.audio = new Audio('Basil_BasilTheBuilderAtYour.mp3')
+            window.audio.onended = function() {
+              holding = 0;
+            };
+            window.audio.play();
+          };
+          window.audio.play();
+          btbvisited = 1;
+        } else {
+          $('#content').text('');
+          window.audio = new Audio('Narrator_BasilNortheast.mp3');
+          window.audio.play();
+          window.audio.onended = function() {holding = 0;}
+        }
+        window.bg.pause();
+        window.bg = new Audio('Basil Background.mp3');
+        window.bg.loop = true;
+        window.bg.volume = 0.010;
+        window.bg.play();
+      }
+
+      if (loc == 3) { //farmer pickle fields
+        if (fpfvisited == 0) {
+          $('#content').text('In the distance, there is an old man with grey hair wearing denim overalls diligently tilling a large field. When he notices you approaching, he calls you over.');
+          window.audio = new Audio('Narrator_InTheDistanceThereIsAnOldMan.mp3');
+          window.audio.play();
+          window.audio.onended = function() {
+            $('#content').text('Hi there, I\'m farmer pickles, and this is my field. I live a simple life, but I have many years under my belt, so if you need any advice, I can give it to you straight. No need for chit chat. It\'s best you get to work so I can start planting as soon as possible.');
+            window.audio = new Audio('Farmer_HiThere.mp3')
+            window.audio.onended = function() {
+              holding = 0;
+            };
+            window.audio.play();
+          };
+          window.audio.play();
+          fpfvisited = 1;
+        } else {
+          $('#content').text('');
+          window.audio = new Audio('Narrator_FarmerPickleFieldsWest.mp3');
+          window.audio.play();
+          window.audio.onended = function() {holding = 0;}
+        }
+        window.bg.pause();
+        window.bg = new Audio('Farmer Pickle Background.mp3');
+        window.bg.loop = true;
+        window.bg.volume = 0.025;
+        window.bg.play();
+      }
+      
+      if (loc == 4) { //your house
+        if (yhvisited == 0) {
+        } else {
+          $('#content').text('');
+          window.audio = new Audio('Narrator_YourHouseCenter.mp3');
+          window.audio.play();
+          window.audio.onended = function() {holding = 0;}
+        }
+        window.bg.pause();
+        window.bg = new Audio('Narration Background.mp3');
+        window.bg.loop = true;
+        window.bg.volume = 0.025;
+        window.bg.play();
+      }
+      
+      if (loc == 5) { //chartreuse the vlogger
+        if (ctvvisited == 0) {
+          $('#content').text('A young woman wearing a stylish white linen outfit is laying out in the sun on a lawn chair. She is wearing a wide-brimmed hat and sunglasses. She doesn\'t notice you for a while, before she looks up from her phone and gasps.');
+          window.audio = new Audio('Narrator_AYoungWomanWearingWhiteLinen.mp3');
+          window.audio.play();
+          window.audio.onended = function() {
+            $('#content').text('Omg, are you a subscriber? You really traveled a long way to see your favorite YouTuber, so I feel bad saying it, but I\'m dealing with too much right now to take pictures.');
+            window.audio = new Audio('Chartreuse_OMGAreYou.mp3')
+            window.audio.onended = function() {
+              $('#content').text('Oh...you\'ve never heard of me? Well, my name is Chartreuse. I have 6 million subscribers on YouTube and 3 million followers on Insta. Does that ring a bell now? Anyway, if you\'re the new architect, I can totally help you out with your design decisions. Last year I did a whole video on redecorating my apartment. You can DM me about it, or just come here. The LTE is kind of spotty.');
+              window.audio = new Audio('Chartreuse_YouveNeverHeardOfMe.mp3')
+              window.audio.onended = function() {
+                holding = 0;
+              };
+              window.audio.play();
+            };
+            window.audio.play();
+          };
+          window.audio.play();
+          ctvvisited = 1;
+        } else {
+          $('#content').text('');
+          window.audio = new Audio('Narrator_ChartreuseHouseEast.mp3');
+          window.audio.play();
+          window.audio.onended = function() {holding = 0;}
+        }
+        window.bg.pause();
+        window.bg = new Audio('Chartreuse Background.mp3');
+        window.bg.loop = true;
+        window.bg.volume = 0.025;
+        window.bg.play();
+      }
+      
+      if (loc == 6) { //emerald emporium
+        if (eevisited == 0) {
+          $('#content').text('There\'s a painted cardboard sign that reads \"Emerald Emporium\" hanging at the entrance of a dock, where a house boat is anchored. This must be one of the businesses Mayor Shamrock was talking about earlier.');
+          window.audio = new Audio('Narrator_TheresAPaintedCardboardSignEmeraldEmporium.mp3');
+          window.audio.play();
+          window.audio.onended = function() {
+            $('#content').text('A young girl with braided hair runs out as you approach. She\'s wearing black rain boots and a green fishing bib. Her eyebrows are furrowed, and she is staring right at you as she stomps in your direction.');
+            window.audio = new Audio('Narrator_AYoungGirlWithBraidedHair.mp3');
+            window.audio.onended = function() {
+                $('#content').text('Hey, customer! My name\'s Em, and this boat is home to my very important business, Emerald Emporium. Em is short for Emerald, because this is my boat. Definitely not my dad\'s boat. Mine. He won\'t even notice it\'s gone...');
+                window.audio = new Audio('Em_HeyCustomer.mp3');
+                window.audio.onended = function() {
+                    $('#content').text('Anyway, I\'ve been helping my dad run his construction supply business for nine years. That\'s right, since the day I was born I\'ve been in the business of business. And my dad has always told me, never sleep on a business opportunity.');
+                    window.audio = new Audio('Em_AnywayIveBeenHelping.mp3')
+                    window.audio.onended = function() {
+                        $('#content').text('So when I was watching the news in the middle of the night, and I heard you all were planning a huge building project, I didn\'t sleep. I ran to the dock, loaded up on supplies, and sailed my way straight here. I may or may not know how to get back. But the important thing is, I have the best supplies you\'ll find in a two-mile radius, right here on my boat! Just come in and talk to me whenever you need something. Please come. I need this to be a success...');
+                        window.audio = new Audio('Em_SoWhenIWasWatching.mp3')
+                        window.audio.onended = function() {
+                          holding = 0;
+                        };
+                        window.audio.play();
+                    };
+                    window.audio.play();
+                };
+                window.audio.play();
+            };
+            window.audio.play();
+          };
+          window.audio.play();
+          eevisited = 1;
+        } else {
+          $('#content').text('');
+          window.audio = new Audio('Narrator_Emerald Emporium Southwest.mp3');
+          window.audio.play();
+          window.audio.onended = function() {holding = 0;}
+        }
+        window.bg.pause();
+        window.bg = new Audio('Emerald Background.mp3');
+        window.bg.loop = true;
+        window.bg.volume = 0.025;
+        window.bg.play();
+      }    
+      
+      if (loc == 7) { //town hall
+        if (thvisited == 0 && reset == 0) {
+          $('#content').text('This is town hall. It is a large, green tent. Mayor Shamrock is sitting on a lawn chair outside the tent, reading.');
+          window.audio = new Audio('Narrator_ThisIsTownHall.mp3');
+          window.audio.play();
+          window.audio.onended = function() {
+            holding = 0;
+          };
+          window.audio.play();
+          thvisited = 1;
+        } else {
+          $('#content').text('');
+          window.audio = new Audio('Narrator._TownHallSouthSquarem4a.mp3');
+          window.audio.onended = function() {
+            if (reset == 1) {
+                reset = 0;
+                if (round == 2) {
+                  $('#content').text('Great job rebuilding our houses! Now, your next task will be to replant the trees that burned down.');
+                  window.audio = new Audio('Mayor_GreatJobRebuildingHouses.mp3');
+                  window.audio.onended = function() {
+                    holding = 0;
+                  }
+                  window.audio.play();
+                }
+                if (round == 3) {
+                  $('#content').text('Great job planting those trees!<br/><br/>Your next task is to supply water to the town.');
+                  window.audio = new Audio('Mayor_GreatJobPlantingTrees.mp3');
+                  window.audio.onended = function() {
+                    holding = 0;
+                  }
+                  window.audio.play();
+                }
+                if (round == 4) {
+                  $('#content').text("We finally have water!<br/><br/>But what we need now is some food. You need to figure out how we're going to set up our farms.");
+                  window.audio = new Audio('Mayor_WeFinallyHaveWater.mp3');
+                  window.audio.onended = function() {
+                    holding = 0;
+                  }
+                  window.audio.play();
+                }
+                if (round == 5) {
+                  $('#content').text("Great job helping us decide how to farm.<br/><br/>The last thing we'll need is a power supply.");
+                  window.audio = new Audio('Mayor_GreatJobDecideHowToFarm.mp3');
+                  window.audio.onended = function() {
+                    holding = 0;
+                  }
+                  window.audio.play();
+                }
+                if (round == 6) {
+                  $('#content').text("Wow, you finished! Thanks for all your help in rebuilding our town, we couldn't have done it without you!");
+                  window.audio = new Audio('Mayor_WowYouFinished.mp3');
+                  window.audio.onended = function() {
+                    holding = 0;
+                  }
+                  window.audio.play();
+                  if (score1 == 0) {
+                    $('#content').text('Your score: 0');
+                  }
+                  else if (score1 == 1) {
+                    $('#content').text('Your score: 1');
+                  }
+                  else if (score1 == 2) {
+                    $('#content').text('Your score: 2');
+                  }
+                  else if (score1 == 3) {
+                    $('#content').text('Your score: 3');
+                  }
+                  else if (score1 == 4) {
+                    $('#content').text('Your score: 4');
+                  }
+                  else if (score1 == 5) {
+                    $('#content').text('Your score: 5');
+                  }
+                }
+            }
+          else{ holding = 0;}
+          };
+          window.audio.play();
+        }
+        window.bg.pause();
+        window.bg = new Audio('Town Hall Background.mp3');
+        window.bg.loop = true;
+        window.bg.volume = 0.025;
+        window.bg.play();
+      }  
+
+      if (loc == 8) { //sage supply shop
+        if (sssvisited == 0) {
+          $('#content').text('There\'s a woman with long hair tied back with a green bandanna sitting in a rocking chair outside a small shack. She\'s wearing a floral-print dress and strappy sandals. Above the door to the shack, there\'s a carved sign that says \"Sage Supply Shop\". An old beagle is sitting by her feet, and his tail starts to wag as you approach.');
+          window.audio = new Audio('Narrator_There\'sAWomanWithLongHair.mp3');
+          window.audio.play();
+          window.audio.onended = function() {
+            $('#content').text('Hello there. You must be the architect. Doesn\'t it feel like fate, that we should find ourselves on the same island, right as you need building supplies?  My name is Sage, allow me to tell you about my shop.');
+            window.audio = new Audio('Sage_HelloThere.mp3')
+            window.audio.onended = function() {
+                $('#content').text('My shop was named \"Sage Supply Shop\" by my clients, because I\'ve been told I give sage advice, that exemplifies the wisdom I have acquired after many years living in the forest, and becoming one with nature. Back then I went by a different name, but since my clients got into the habit of calling me Sage, I decided that it was meant to be.');
+                window.audio = new Audio('Sage_MyShopWasNamed.mp3')
+                window.audio.onended = function() {
+                    $('#content').text('As for my business, well, it\'s more of a calling. My supplies are always free, however, I do charge a small sum for my efforts in determining what invaluable item to provide you. I charge whatever mother nature asks me to, and you\'ll find that this sum is typically proportional to the market cost of the materials. This is because nature is wise, and she will not let you exploit her for profit. Her words, not mine.');
+                    window.audio = new Audio('Sage_AsForMyBusiness.mp3')
+                    window.audio.onended = function() {
+                        $('#content').text('Should you find yourself in need of assistance, you already know the best place to go. Here. It\'s here. If you didn\'t already know that, it seems nature is not in communication with you. You will need my help for sure. Stop by any time. I will be here.');
+                        window.audio = new Audio('Sage_ShouldYouFindYourself.mp3')
+                        window.audio.onended = function() {
+                          holding = 0;
+                        };
+                        window.audio.play();
+                    };
+                    window.audio.play();
+                };
+                window.audio.play();
+            };
+            window.audio.play();
+          };
+          window.audio.play();
+          sssvisited = 1;
+        } else {
+          $('#content').text('');
+          window.audio = new Audio('Narrator_SageSupplyShopSoutheast.mp3');
+          window.audio.play();
+          window.audio.onended = function() {holding = 0;}
+        }
+        window.bg.pause();
+        window.bg = new Audio('Sage Background.mp3');
+        window.bg.loop = true;
+        window.bg.volume = 0.025;
+        window.bg.play();
+      }
+
+    }
+
+    $(document).on("keyup", function(e) { 
+        e.preventDefault(); 
+        if (holding == 0) {
+        if (turn == 0) {
+          $('#content').text('Welcome, this is the narration script. The narration script will provide descriptions of any areas of the map that you explore.');
+          window.audio = new Audio('WelcomeThisIsTheNarration.mp3');
+          audio.onended = function() { beep.play(); holding = 0; };
+          audio.play();
+          holding = 1;
+          turn++;
+        } 
+        else if (turn == 1) {
+          $('#content').text('You have just arrived to a remote island after a long, grueling trip on a boat. Several residents lived here peacefully before forest fires struck and burned down the residents\' homes and caused devastation to the local ecosystem.');
+          window.audio = new Audio('YouHaveJustArrived.mp3');
+          window.audio.onended = function() { beep.play(); holding = 0; };
+          audio.play();
+          holding = 1;
+          turn++;
+        } 
+        else if (turn == 2) {
+          $('#content').text('The island has recruited a famous architect known for their expertise in island construction to help rebuild the island in the most environmentally sustainable way possible.');
+          window.audio = new Audio('TheIslandHasRecruited.mp3');
+          audio.onended = function() { beep.play(); holding = 0;};
+          audio.play();
+          holding = 1;
+          turn++;
+        } 
+        else if (turn == 3) {
+          $('#content').text('That architect is you.');
+          audio = new Audio('ThatArchitectIsYou.mp3');
+          beep = new Audio('beep.mp3');
+          audio.onended = function() { beep.play(); holding = 0;};
+          audio.play();
+          holding = 1;
+          turn++;
+        }     
+        else if (turn == 4) {
+          $('#content').text('You must help the island town rebuild itself, and you have two primary goals: reduce the likelihood that island will burn down in the future, and ensure that the island is as environmentally sustainable as possible. They are counting on you!');
+          audio = new Audio('YouMustHelpTheIslandTown.mp3');
+          beep = new Audio('beep.mp3');
+          audio.onended = function() { beep.play(); holding = 0;};
+          audio.play();
+          holding = 1;
+          turn++;
+        }
+        else if (turn == 5) {
+          $('#content').text('Now, here are some instructions for navigating the island. The island is based on a 3 by 3 grid, which correspond to the cardinal directions, North, East, South, West, and Northwest, Northeast, Southeast, and Southwest.');
+          audio = new Audio('NowHereAreSomeInstructions.mp3');
+          audio.onended = function() { beep.play(); holding = 0;};
+          audio.play();
+          holding = 1;
+          turn++;
+        } 
+        else if (turn == 6) {
+          $('#content').text('Each square is associated with a unique sound, and this narration will indicate which square you are currently in after each move. To navigate, you will press the arrow keys.');
+          audio = new Audio('EachSquareIsAssociatedWith.mp3');
+          audio.onended = function() { beep.play(); holding = 0;};
+          audio.play();
+          holding = 1;
+          turn++;
+        } 
+        else if (turn == 7) {
+          $('#content').text('You can use the up arrow key to move north, the right arrow key to move east, the down arrow key to move south, and the left arrow key to move west. Please note that you can only move in a direction relative to the current square you are in. In other words, you cannot teleport to a square that is not directly next to a the square you are currently in.');
+          audio = new Audio('YouCanUseTheUpArrowKey.mp3');
+          audio.onended = function() { beep.play(); holding = 0;};
+          audio.play();
+          holding = 1;
+          turn++;
+        } 
+        else if (turn == 8) {
+          $('#content').text('As you explore the island, you will meet its residents. One resident lives in each square. You may talk to a resident by pressing the space bar. If the resident offers you a choice, you can press any letter key to accept, or press the space bar to end the conversation.');
+          audio = new Audio('AsYouExploreTheIsland.mp3');
+          audio.onended = function() { beep.play(); holding = 0;};
+          audio.play();
+          holding = 1;
+          turn++;
+        }       
+        else if (turn == 9) {
+          $('#content').text('Oh, someone is approaching you. It\'s a short man dressed in a bright green suit with a green fedora. He\'s also wearing green Crocs. Bold fashion choice, I must say. He has a trimmed beard and looks to be about 40 years old, by the wrinkles around his eyes and forehead. He is smiling excitedly and walking at a brisk pace.');
+          audio = new Audio('SomeoneIsApproachingYou.mp3');
+          audio.onended = function() { beep.play(); holding = 0;};
+          audio.play();
+          holding = 1;
+          turn++;
+        } 
+        else if (turn == 10) {
+          $('#content').text('Hey, you there! You must be the architect we\'ve been waiting for. What took you so long?');
+          audio = new Audio('HeyYouThereYouMustBe.mp3');
+          audio.onended = function() { beep.play(); holding = 0;};
+          audio.play();
+          holding = 1;
+          turn++;
+        } 
+        else if (turn == 11) {
+          $('#content').text('My name is Mayor Shamrock, and as the name implies, I\'m the leader of this place, oh ho ho. We\'ve set up a house for you to live in while you\'re here, but I hope you won\'t be spending much time there, since there\'s much work to do out in the field. And I\'d say it\'s more of a tent than a house. Let me show you.');
+          audio = new Audio('MyNameIsMayorShamrock.mp3');
+          audio.onended = function() { beep.play(); holding = 0;};
+          audio.play();
+          holding = 1;
+          turn++;
+        } 
+        else if (turn == 12) {
+          $('#content').text('The mayor has escorted you to the South square, where your house...um...well, your tent is located. Your tent appears to be a set of bed sheets propped up by some sticks. It seems like you have a lot of work to do.');
+          audio = new Audio('Narrator_TheMayorHasEscortedYou.mp3');
+          audio.onended = function() { beep.play(); holding = 0;};
+          audio.play();
+          window.bg.pause();
+          window.bg = new Audio('Narration Background.mp3')
+          window.bg.loop = true;
+          window.bg.volume = 0.025;
+          window.bg.play();
+          holding = 1;
+          turn++;
+        } 
+        else if (turn == 13) {
+          $('#content').text('Well, it\'s not much, but like I said, we don\'t want you to spend too much time here anyway. After all, nothing important happens here. Speaking of important things, your first objective is to rebuild our houses! The residents currently have nowhere to live, but they\'ve each selected a plot of land.');
+          audio = new Audio('Mayor_WellItsNotMuchButLikeISaid.mp3');
+          audio.onended = function() { beep.play(); holding = 0;};
+          audio.play();
+          holding = 1;
+          turn++;
+        } 
+        else if (turn == 14) {
+          $('#content').text('There are two businesses that have set up shop on the island, and they\'ll each be able to offer you a different building material for the houses. You should select the building material that best suits the needs of our residents, and of course meets our goals of environmental sustainability.');
+          audio = new Audio('Mayor_ThereAreTwoBusinesses.mp3');
+          audio.onended = function() { beep.play(); holding = 0;};
+          audio.play();
+          holding = 1;
+          turn++;
+        } 
+        else if (turn == 15) {
+          $('#content').text('I think it would be best if you speak to each of the residents before you make a decision of which material we should buy. Of course, I will remain entirely impartial, and leave the decisions up to you.');
+          audio = new Audio('Mayor_IThinkItWouldBeBest.mp3');
+          audio.onended = function() { beep.play(); holding = 0;};
+          audio.play();
+          holding = 1;
+          turn++;
+        } 
+        else if (turn == 16) {
+          $('#content').text('Oh dear, it looks like I\'ve lost my map and I have a horrible sense of direction, so you\'ll have to explore for yourself to find out where everyone lives. We have eight permanent residents on this island, including the two business owners and me, of course.');
+          audio = new Audio('Mayor_OhDear.mp3');
+          audio.onended = function() { beep.play(); holding = 0;};
+          audio.play();
+          holding = 1;
+          turn++;
+        } 
+        else if (turn == 17) {
+          $('#content').text('One of our residents is an environmentalist, so you\'ll be wise to listen carefully to her opinion. We also have an engineer, who will be responsible for executing your plans. Once you have accepted a business person\'s offer, you should go to the engineer to start construction.');
+          audio = new Audio('Mayor_OneOfOurResidents.mp3');
+          audio.onended = function() { beep.play(); holding = 0;};
+          audio.play();
+          holding = 1;
+          turn++;
+        } 
+        else if (turn == 18) {
+          $('#content').text('Now, I won\'t waste another minute of your time. I\'ll return to the town hall. Well, it\'s just another tent for now, really. Anyway, go explore!');
+          audio = new Audio('Mayor_NowIWontWaste.mp3');
+          audio.onended = function() { beep.play(); holding = 0;};
+          audio.play();
+          holding = 1;
+          turn++;
+        } 
+        else if (turn == 19) {
+          $('#content').text('Mayor Shamrock left in a hurry. As a reminder, you can press the arrow keys to move to another space, and press space bar to speak with residents.');
+          audio = new Audio('Narrator_TheMayorShamrockLeft.mp3');
+          audio.onended = function() { holding = 0;};
+          audio.play();
+          holding = 1;
+          turn++;
+          yhvisited = 1;
+        } 
+        else if (turn == 20) {
+          if (e.keyCode == 32) {
+            holding = 1;
+            spacebar();
+          } 
+          else if (e.keyCode == 38) { //up
+            holding = 1;
+            north();
+          }
+          else if (e.keyCode == 40) { //down
+            holding = 1;
+            south();
+          }
+          else if (e.keyCode == 37) { //left, west
+            holding = 1;
+            west();
+          }
+          else if (e.keyCode == 39) { //right, east
+            holding = 1;
+            east();
+          }
+          else if (e.keyCode <= 90 && e.keyCode >= 65) { //any letter key
+            holding = 1;
+            select();
+          }
+        }
+    } else { 
+      if (turn == 20) {
+          if (e.keyCode == 32) {
+            holding = 1;
+            spacebar();
+          } 
+          else if (e.keyCode == 38) { //up
+            holding = 1;
+            window.audio.pause();
+            north();
+          }
+          else if (e.keyCode == 40) { //down
+            holding = 1;
+            window.audio.pause();
+            south();
+          }
+          else if (e.keyCode == 37) { //left, west
+            holding = 1;
+            window.audio.pause();
+            west();
+          }
+          else if (e.keyCode == 39) { //right, east
+            holding = 1;
+            window.audio.pause();
+            east();
+          }
+          else if (e.keyCode <= 90 && e.keyCode >= 65) { //any letter key
+            holding = 1;
+            window.audio.pause();
+            select();
+          }
+      }
+      if (e.keyCode == 13) {
+        holding = 0;
+        window.audio.pause();
+      }
+      if (e.keyCode == 8) {
+        holding = 0;
+        window.audio.pause();
+        turn--;
+        turn--;
+      }
+    
+  }
+  });
+
+    </script>
+
