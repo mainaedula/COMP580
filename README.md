@@ -1,14 +1,11 @@
 # COMP580
 COMP 580 Final Project
 
+**Link to play: https://dupreezd.github.io**
+
+***Note:*** *due to browser autoplay restrictions, you must CLICK on the page to activate audio*
+
 This game is intended for use by students who are blind or have low-vision. The Eco-Architect is an adventure game where the player is tasked with rebuilding an island town.
 
-Please download the "HTML_plus_sounds" folder to play locally, then simply open the html file in any browser. *For best experience, play in Safari or Firefox.*
+You can also download the file "html_plus_sounds" and click on index.html to play in any browser. 
 
-Safari: preferred browser
-
-Firefox: make sure autoplay of sounds is enabled
-
-Chrome: slightly buggy even when sound is enabled--you will not hear background music or prompts to click
-
-You can also play here (https://dupreezd.github.io), but autoplaying sounds don't work! So, you won't here the keypress prompts or background music.
